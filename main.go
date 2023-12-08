@@ -78,8 +78,17 @@ func main() {
 	}
 }
 
-func ZIPTo7z(fn string) {
-	format := "mkdir tmp && Copy-Item FILE_NAME.zip tmp && cd tmp && 7z x FILE_NAME.zip && Remove-Item FILE_NAME.zip && 7z a -t7z FILE_NAME.7z * && Copy-Item FILE_NAME.7z ../ && cd .. && Remove-Item -Force -Recurse tmp"
-	command := strings.ReplaceAll(format, "FILE_NAME", fn)
+func ZIPTo7z(fn string, ver string) {
+	command := "mkdir tmp && " +
+		"Copy-Item FILE_NAME.zip tmp && " +
+		"cd tmp && " +
+		"7z x FILE_NAME.zip && Remove-Item FILE_NAME.zip && " +
+		"7z a -t7z FILE_NAME.7z * && " +
+		"Copy-Item FILE_NAME.7z ../ && " +
+		"cd .. && " +
+		"Remove-Item -Force -Recurse tmp && " +
+		"Rename-Item FILE_NAME.7z vscode#VER#https_update.code.visualstudio.com_VER_win32-x64-archive_stable_dl.7z"
+	command = strings.ReplaceAll(command, "FILE_NAME", fn)
+	command = strings.ReplaceAll(command, "VER", ver)
 	exec.Command(command)
 }
